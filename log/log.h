@@ -5,7 +5,8 @@
 #include <stddef.h>
 
 #ifndef LOGMODULE
-#error "LOGMODULE must be set before including log/log.h"
+#warning "LOGMODULE must be set before including log/log.h"
+#define LOGMODULE unknown
 #endif
 
 #ifndef LOGDEFAULT
@@ -51,7 +52,8 @@ static const char *log_strings[] COMPILER_ATTR(unused) = {
 static log_level LOGMODULE_status COMPILER_ATTR(unused) = LOGLEVEL_UNDEFINED;
 
 #ifndef MAXLOGLEVEL
-#error "MAXLOGLEVEL undefined"
+#warning "MAXLOGLEVEL undefined"
+#define MAXLOGLEVEL LOGL_TRACE
 #endif
 
 #if MAXLOGLEVEL > LOGL_TRACE || MAXLOGLEVEL < LOGL_ERROR

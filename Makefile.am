@@ -39,6 +39,10 @@ EXTRA_DIST =
 CLEANFILES =
 MOSTLYCLEANFILES =
 
+# One-file library versions
+ONEFILE_FILES =
+one-file: $(ONEFILE_FILES)
+
 ### Add ax_* rules ###
 # ax_code_coverage
 @CODE_COVERAGE_RULES@
@@ -103,6 +107,24 @@ EXTRA_DIST += \
     lib/libmarshal.map \
     lib/marshal.pc.in
 
+# One-file source for embedded projects
+ONEFILE_FILES += marshal-full.h marshal-full.c
+marshal-full.h: $(MARSHAL_SRC) $(libutil_la_SOURCES)
+	$(AM_V_GEN)cat $^ | grep "^#include" | sort -u >$@ && \
+	echo Flags: $(AM_CFLAGS) $(INCLUDE_DIRS) $(EXTRA_CFLAGS) $(CODE_COVERAGE_CFLAGS)
+
+marshal-full.c: marshal-full.h $(MARSHAL_SRC) $(libutil_la_SOURCES)
+	$(AM_V_GEN)echo '#include "marshal-full.h"'>$@ && \
+		for f in $(filter-out $<,$^); do \
+			echo "/* File: $$f */" >>$@; \
+			echo "#undef LOGMODULE" >>$@; \
+			cat $$f | grep -v "^#include" >>$@; \
+		done
+
+CLEANFILES += \
+    marshal-full.h \
+    marshal-full.c
+
 ### TCG TSS TCTI spec libraries ###
 # tcti headers
 libtctidir      = $(includedir)/tcti
@@ -157,6 +179,24 @@ nodist_pkgconfig_DATA += lib/sapi.pc
 EXTRA_DIST += \
     lib/sapi.pc.in
 
+# One-file source for embedded projects
+ONEFILE_FILES += sapi-full.h sapi-full.c
+sapi-full.h: $(SYSAPI_C) $(SYSAPIUTIL_C)
+	$(AM_V_GEN)cat $^ | grep "^#include" | sort -u >$@ && \
+	echo Flags: $(INCLUDE_DIRS) $(EXTRA_CFLAGS) $(CODE_COVERAGE_CFLAGS)
+
+sapi-full.c: sapi-full.h $(SYSAPI_C) $(SYSAPIUTIL_C)
+	$(AM_V_GEN)echo '#include "sapi-full.h"'>$@ && \
+		for f in $(filter-out $<,$^); do \
+			echo "/* File: $$f */" >>$@; \
+			echo "#undef LOGMODULE" >>$@; \
+			cat $$f | grep -v "^#include" >>$@; \
+		done
+
+CLEANFILES += \
+    sapi-full.h \
+    sapi-full.c
+
 ### TCG TSS ESAPI spec library ###
 if ESAPI
 # Headers
@@ -177,6 +217,25 @@ esapi_libesapi_la_SOURCES = $(ESAPI_SRC)
 
 nodist_pkgconfig_DATA += lib/esapi.pc
 EXTRA_DIST += lib/esapi.pc.in
+
+# One-file source for embedded projects
+ONEFILE_FILES += esapi-full.h esapi-full.c
+esapi-full.h: $(ESAPI_SRC) $(libutil_la_SOURCES)
+	$(AM_V_GEN)cat $^ | grep "^#include" | sort -u >$@ && \
+	echo Flags: $(AM_CFLAGS) $(INCLUDE_DIRS) $(EXTRA_CFLAGS) $(CODE_COVERAGE_CFLAGS)
+
+esapi-full.c: esapi-full.h $(ESAPI_SRC) $(libutil_la_SOURCES)
+	$(AM_V_GEN)echo '#include "$<"'>$@ && \
+		for f in $(filter-out $<,$^); do \
+			echo "/* File: $$f */" >>$@; \
+			echo "#undef LOGMODULE" >>$@; \
+			BASE=$$(basename $$f .c); \
+			cat $$f | grep -v "^#include" | sed s/store_input/store_$${BASE}_input/g >>$@; \
+		done
+
+CLEANFILES += \
+    esapi-full.h \
+    esapi-full.c
 endif #ESAPI
 
 ### Man Pages
