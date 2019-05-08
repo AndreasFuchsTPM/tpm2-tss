@@ -294,6 +294,24 @@ src_tss2_tcti_libtss2_tcti_device_la_SOURCES  = \
     src/tss2-tcti/tcti-device.c
 endif # ENABLE_TCTI_DEVICE
 
+# tcti library for swtpm
+if ENABLE_TCTI_SWTPM
+libtss2_tcti_swtpm = src/tss2-tcti/libtss2-tcti-swtpm.la
+tss2_HEADERS += $(srcdir)/include/tss2/tss2_tcti_swtpm.h
+lib_LTLIBRARIES += $(libtss2_tcti_swtpm)
+pkgconfig_DATA += lib/tss2-tcti-swtpm.pc
+EXTRA_DIST += lib/tss2-tcti-swtpm.map lib/tss2-tcti-swtpm.def src/tss2-tcti/tss2-tcti-swtpm.vcxproj
+
+if HAVE_LD_VERSION_SCRIPT
+src_tss2_tcti_libtss2_tcti_swtpm_la_LDFLAGS  = -Wl,--version-script=$(srcdir)/lib/tss2-tcti-swtpm.map
+endif # HAVE_LD_VERSION_SCRIPT
+src_tss2_tcti_libtss2_tcti_swtpm_la_LIBADD   = $(libtss2_mu) $(libutil)
+src_tss2_tcti_libtss2_tcti_swtpm_la_SOURCES  = \
+    src/tss2-tcti/tcti-common.c \
+    src/tss2-tcti/tcti-swtpm.c \
+    src/tss2-tcti/tcti-swtpm.h
+endif # ENABLE_TCTI_SWTPM
+
 # tcti library for Microsoft TPM2 simulator
 if ENABLE_TCTI_MSSIM
 libtss2_tcti_mssim = src/tss2-tcti/libtss2-tcti-mssim.la

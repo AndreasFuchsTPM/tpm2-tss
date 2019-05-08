@@ -1,0 +1,5 @@
+LIBRARY tss2-tcti-swtpm
+EXPORTS
+    tcti_platform_command
+    Tss2_Tcti_Info
+    Tss2_Tcti_Swtpm_Init

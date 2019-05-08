@@ -15,7 +15,7 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])]) #Backward compatible setti
 
 AC_CONFIG_HEADERS([config.h])
 
-AC_CONFIG_FILES([Makefile Doxyfile lib/tss2-sys.pc lib/tss2-esys.pc lib/tss2-mu.pc lib/tss2-tcti-device.pc lib/tss2-tcti-mssim.pc lib/tss2-rc.pc lib/tss2-tctildr.pc])
+AC_CONFIG_FILES([Makefile Doxyfile lib/tss2-sys.pc lib/tss2-esys.pc lib/tss2-mu.pc lib/tss2-tcti-device.pc lib/tss2-tcti-mssim.pc lib/tss2-tcti-swtpm.pc lib/tss2-rc.pc lib/tss2-tctildr.pc])
 
 # propagate configure arguments to distcheck
 AC_SUBST([DISTCHECK_CONFIGURE_FLAGS],[$ac_configure_args])
@@ -138,6 +138,14 @@ AM_CONDITIONAL([ENABLE_TCTI_MSSIM], [test "x$enable_tcti_mssim" != xno])
 AS_IF([test "x$enable_tcti_mssim" = "xyes"],
 	AC_DEFINE([TCTI_MSSIM],[1], [TCTI FOR MS SIMULATOR]))
 
+AC_ARG_ENABLE([tcti-swtpm],
+            [AS_HELP_STRING([--disable-tcti-swtpm],
+                            [don't build the tcti-swtpm module])],,
+            [enable_tcti_swtpm=yes])
+AM_CONDITIONAL([ENABLE_TCTI_SWTPM], [test "x$enable_tcti_swtpm" != xno])
+AS_IF([test "x$enable_tcti_swtpm" = "xyes"],
+	AC_DEFINE([TCTI_SWTPM],[1], [TCTI FOR SWTPM]))
+
 AC_ARG_ENABLE([tcti-fuzzing],
             [AS_HELP_STRING([--enable-tcti-fuzzing],
                             [build the tcti-fuzzing module])],,
@@ -175,7 +183,7 @@ AC_ARG_ENABLE([integration],
         [build and execute integration tests])],,
     [enable_integration=no])
 AS_IF([test "x$enable_integration" = "xyes"],
-      [ERROR_IF_NO_PROG([tpm_server])
+      [ERROR_IF_NO_PROG([swtpm])
        ERROR_IF_NO_PROG([ss])
        ERROR_IF_NO_PROG([ps])
        ERROR_IF_NO_PROG([echo])
