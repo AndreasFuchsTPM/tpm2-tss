@@ -686,6 +686,18 @@ install-man: install-man3 install-man7
 	$(LN_S) -f Tss2_TctiLdr_Initialize.3 $(DESTDIR)$(man3dir)/Tss2_TctiLdr_Initialize_Ex.3
 endif #FAPI
 
+
+MANFILES:=$(man3_MANS) $(man5_MANS) $(man7_MANS)
+
+markdown-doc: $(MANFILES)
+	$(AM_V_GEN)$(foreach f,$^,pandoc $f -t rst >doc/manmd/$(notdir $f).rst;)
+
+rst-doc: $(MANFILES)
+	$(AM_V_GEN)$(foreach f,$^,pandoc $f -t markdown >doc/manmd/$(notdir $f).md;)
+
+CLEANFILES += $(foreach f,$^,doc/manmd/$(notdir $f).rst)
+CLEANFILES += $(foreach f,$^,doc/manmd/$(notdir $f).md)
+
 EXTRA_DIST += dist/tpm-udev.rules
 
 install-dirs:

@@ -15,11 +15,6 @@
 
 import subprocess
 
-# Create (unused) root file
-index_rst = open('index.rst', 'w')
-index_rst.write('.. toctree::\n   :maxdepth: 2')
-index_rst.close()
-
 # Build doxygen documentation
 subprocess.call(r"""
         cd ..
@@ -29,7 +24,11 @@ subprocess.call(r"""
              s/@top_builddir@/./g;
              s/@PACKAGE_NAME@/tpm2-tss/g;
              s/@VERSION@/$version/g" Doxyfile.in > Doxyfile
-        SRCDIR='.' PROJECT='tpm2-tss' VERSION='2.3.0-dev' PERL_PATH='/usr/bin/perl' HAVE_DOT='NO' GENERATE_MAN='YES' GENERATE_RTF='YES' GENERATE_XML='NO' GENERATE_HTMLHELP='NO' GENERATE_CHI='NO' GENERATE_HTML='YES' GENERATE_LATEX='NO' DOCDIR=doxygen-doc doxygen Doxyfile
+        SRCDIR='.' PROJECT='tpm2-tss' VERSION='2.3.0-dev' PERL_PATH='/usr/bin/perl' HAVE_DOT='NO' GENERATE_MAN='YES' GENERATE_RTF='YES' GENERATE_XML='NO' GENERATE_HTMLHELP='NO' GENERATE_CHI='NO' GENERATE_HTML='YES' GENERATE_LATEX='NO' DOCDIR=doxygen-doc doxygen Doxyfile;
+        mkdir sphinx/manrst
+        for f in doxygen-doc/man/Esys_*.3; do pandoc -t rst $f >sphinx/manrst/$(basename $f .3).rst; done
+        for f in doxygen-doc/man/Fapi_*.3; do pandoc -t rst $f >sphinx/manrst/$(basename $f .3).rst; done
+        for f in sphinx/manrst/*.rst; do sed "s/NAME/$(basename $f .rst)/;s/======*/-----/g" -i $f; done
         cd sphinx
     """, shell=True)
 
@@ -54,7 +53,7 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 # source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = ['.rst', '.md']
 
 # The encoding of source files.
 #source_encoding = 'utf-8-sig'
@@ -125,7 +124,7 @@ todo_include_todos = False
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -159,7 +158,8 @@ html_static_path = ['_static']
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
 # directly to the root of the documentation.
-html_extra_path = ['../doxygen-doc/html']
+#html_extra_path = ['../doxygen-doc/html']
+html_extra_path = [ ]
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
