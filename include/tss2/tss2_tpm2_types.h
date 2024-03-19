@@ -917,7 +917,7 @@ struct TPMS_EMPTY {
  * by a TPM 2.0 device as either an input or output structure.
  * Definition of TPMS_ALGORITHM_DESCRIPTION Structure <OUT>
  */
-#if defined(INTERNALBUILD)
+#if !defined(INTERNALBUILD)
     #define DEPRECATED
 #else
     #define DEPRECATED __attribute__((deprecated))

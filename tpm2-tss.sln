@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tss2-mu", "src\tss2-mu\tss2-mu.vcxproj", "{A6D8F061-6827-492F-80C3-32C4DD4FC52E}"
 EndProject
@@ -32,7 +32,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tss2-tctildr", "src\tss2-tc
 		{6BA6146F-8B38-49A2-A156-769E0F2CC302} = {6BA6146F-8B38-49A2-A156-769E0F2CC302}
 		{89B6B774-2886-48CF-B1D0-534AC449E0FD} = {89B6B774-2886-48CF-B1D0-534AC449E0FD}
 	EndProjectSection
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tss2-rc", "src\tss2-rc\tss2-rc.vcxproj", "{0674A684-8945-4EDB-858F-1A2ECDEFFDC1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tpm2_send_tbs", "dist\tpm2_send_tbs\tpm2_send_tbs.vcxproj", "{82A9322B-8696-4C62-94C4-D1553A120F37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,6 +101,14 @@ Global
 		{0674A684-8945-4EDB-858F-1A2ECDEFFDC1}.Release|x64.Build.0 = Release|x64
 		{0674A684-8945-4EDB-858F-1A2ECDEFFDC1}.Release|x86.ActiveCfg = Release|Win32
 		{0674A684-8945-4EDB-858F-1A2ECDEFFDC1}.Release|x86.Build.0 = Release|Win32
+		{82A9322B-8696-4C62-94C4-D1553A120F37}.Debug|x64.ActiveCfg = Debug|x64
+		{82A9322B-8696-4C62-94C4-D1553A120F37}.Debug|x64.Build.0 = Debug|x64
+		{82A9322B-8696-4C62-94C4-D1553A120F37}.Debug|x86.ActiveCfg = Debug|Win32
+		{82A9322B-8696-4C62-94C4-D1553A120F37}.Debug|x86.Build.0 = Debug|Win32
+		{82A9322B-8696-4C62-94C4-D1553A120F37}.Release|x64.ActiveCfg = Release|x64
+		{82A9322B-8696-4C62-94C4-D1553A120F37}.Release|x64.Build.0 = Release|x64
+		{82A9322B-8696-4C62-94C4-D1553A120F37}.Release|x86.ActiveCfg = Release|Win32
+		{82A9322B-8696-4C62-94C4-D1553A120F37}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

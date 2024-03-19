@@ -20,6 +20,12 @@
 extern "C" {
 #endif
 
+#if !defined(INTERNALBUILD)
+#define DEPRECATED
+#else
+#define DEPRECATED __attribute__((deprecated))
+#endif
+
 TSS2_RC
 Tss2_MU_INT8_Marshal(
     INT8            src,
@@ -754,7 +760,7 @@ Tss2_MU_TPMS_ALGORITHM_DESCRIPTION_Marshal(
     uint8_t         buffer[],
     size_t          buffer_size,
     size_t         *offset)
-	__attribute__((deprecated));
+	DEPRECATED;
 
 TSS2_RC
 Tss2_MU_TPMS_ALGORITHM_DESCRIPTION_Unmarshal(
@@ -762,7 +768,7 @@ Tss2_MU_TPMS_ALGORITHM_DESCRIPTION_Unmarshal(
     size_t          buffer_size,
     size_t         *offset,
     TPMS_ALGORITHM_DESCRIPTION *dest)
-    __attribute__((deprecated));
+    DEPRECATED;
 
 TSS2_RC
 Tss2_MU_TPMS_TAGGED_PROPERTY_Marshal(

@@ -704,7 +704,7 @@ iesys_encrypt_param(ESYS_CONTEXT * esys_context,
             size_t key_len = TPM2_MAX_SYM_KEY_BYTES + TPM2_MAX_SYM_BLOCK_SIZE;
             if (key_len % hlen > 0)
                 key_len = key_len + hlen - (key_len % hlen);
-            uint8_t symKey[key_len];
+            uint8_t symKey[2 * TPM2_MAX_SYM_KEY_BYTES + TPM2_MAX_SYM_BLOCK_SIZE];
             size_t paramSize = 0;
             const uint8_t *paramBuffer;
 
@@ -715,7 +715,7 @@ iesys_encrypt_param(ESYS_CONTEXT * esys_context,
             if (paramSize == 0)
                 continue;
 
-            BYTE encrypt_buffer[paramSize];
+            BYTE encrypt_buffer[TPM2_MAX_COMMAND_SIZE];
             memcpy(&encrypt_buffer[0], paramBuffer, paramSize);
             LOGBLOB_DEBUG(paramBuffer, paramSize, "param to encrypt");
 
@@ -804,12 +804,12 @@ iesys_decrypt_param(ESYS_CONTEXT * esys_context)
     if (key_len % hlen > 0)
         key_len = key_len + hlen - (key_len % hlen);
 
-    uint8_t symKey[key_len];
+    uint8_t symKey[2 * TPM2_MAX_SYM_KEY_BYTES + TPM2_MAX_SYM_BLOCK_SIZE];
 
     r = Tss2_Sys_GetEncryptParam(esys_context->sys, &p2BSize, &ciphertext);
     return_if_error(r, "Getting encrypt param");
 
-    UINT8 plaintext[p2BSize];
+    UINT8 plaintext[TPM2_MAX_DIGEST_BUFFER];
     memcpy(&plaintext[0], ciphertext, p2BSize);
 
     if (symDef->algorithm == TPM2_ALG_AES) {

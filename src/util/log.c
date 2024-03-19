@@ -137,7 +137,7 @@ doLogBlob(log_level loglevel, const char *module, log_level logdefault,
        logblob are restricted to 255 characters
     int msg_len = vsnprintf(NULL, 0, fmt, vaargs); */
     int msg_len = 255;
-    char msg[msg_len+1];
+    char msg[255+1];
     vsnprintf(msg, sizeof(msg), fmt, vaargs);
     va_end(vaargs);
 
@@ -209,7 +209,7 @@ doLog(log_level loglevel, const char *module, log_level logdefault,
 
     int size = snprintf(NULL, 0, "%s:%s:%s:%d:%s() %s \n",
                 log_strings[loglevel], module, file, line, func, msg);
-    char fmt[size+1];
+    char fmt[512+1];
     snprintf(fmt, sizeof(fmt), "%s:%s:%s:%d:%s() %s \n",
                 log_strings[loglevel], module, file, line, func, msg);
 

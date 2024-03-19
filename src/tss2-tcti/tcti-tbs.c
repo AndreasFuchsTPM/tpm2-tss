@@ -70,11 +70,6 @@ tcti_tbs_transmit (
         return rc;
     }
 
-    LOGBLOB_DEBUG (command_buffer,
-                   command_size,
-                   "sending %zu byte command buffer:",
-                   command_size);
-
     memcpy (tcti_tbs->commandBuffer, command_buffer, command_size);
     tcti_tbs->commandSize = command_size;
 
@@ -138,6 +133,11 @@ tcti_tbs_receive (
     }
 
     original_size = *response_size;
+
+    LOGBLOB_DEBUG(tcti_tbs->commandBuffer,
+        tcti_tbs->commandSize,
+        "sending %zu byte command buffer:",
+        tcti_tbs->commandSize);
 
     tbs_rc = Tbsip_Submit_Command (tcti_tbs->hContext,
                                    TBS_COMMAND_LOCALITY_ZERO,
